@@ -5,21 +5,12 @@ const sequelize = require('./database');
 
 function createWindow() {
     const win = new BrowserWindow({
-        height: 400,
-        width: 600,
+        height: 600,
+        width: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-
-    sequelize
-        .sync()
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log(err);
-        });
 
     win.loadURL(
         isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
@@ -37,7 +28,22 @@ app.on('activate', function(){
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
 });
 
-ipcMain.handle('ping', async (event, args) => {
-    console.log(args);
-    return "pong from back process";
+const USER = {
+    "admin": {
+        "username": "admin",
+        "password": "qwerty"
+    },
+    "user": {
+        "username": "user",
+        "password": "123456"
+    }
+}
+
+ipcMain.handle('login', async (event, args) => {
+    const { username, password } = args;
+
+    const fetchedUser = USER[username];
+    if (!fetchedUser) return false;
+    
+    return fetchedUser.password === password;
 });

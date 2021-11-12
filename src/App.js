@@ -1,19 +1,22 @@
+import { Route, Switch } from 'react-router-dom';
+
 import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
 
 import './App.css';
+import Login from './components/Login';
+import Cashier from './components/Cashier';
+import FormBio from './components/FormBio';
 
 function App() {
-
-  const pingHandler = async (e) => {
-    const res = await window.preload.ping("ping from front process");
-    console.log(res);
-  }
 
   return (
     <div>
       <Container maxWidth="sm">
-        <Button variant="contained" onClick={pingHandler}>Ping</Button>
+        <Switch>
+          <Route path="/" component={Login} exact />
+          <Route path="/cashier" component={Cashier} />
+          <Route path="/bio-form" component={FormBio} />
+        </Switch>
       </Container>
     </div>
   );

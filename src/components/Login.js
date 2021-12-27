@@ -25,21 +25,23 @@ export default function Login() {
 
         const auth = await window.preload.login({username,password});
         
+        setUsername('');
+        setPassword('');
+
         if (!auth) {
-            swal ( "Oops", "username atau password salah!", "error");
+            swal ("Oops", "username atau password salah!", "error");
             return
         }
 
-        history.push('/cashier');
+        history.push('/menu');
     }
 
     return (
         <form noValidate autoComplete="off" onSubmit={loginHandler}>
-            <TextField label="username" fullWidth margin="normal" type="text" onChange={changeUsername} />
-            <TextField label="password" fullWidth margin="normal" type="password" onChange={changePassword} />
+            <TextField label="username" fullWidth margin="normal" type="text" value={username} onChange={changeUsername} />
+            <TextField label="password" fullWidth margin="normal" type="password" value={password} onChange={changePassword} />
             <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
                 <Button variant="contained" type="submit" color="primary">Login</Button>
-                <Button variant="contained" color="secondary">Cancel</Button>
             </Grid>
         </form>
     )
